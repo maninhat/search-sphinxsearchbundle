@@ -74,6 +74,11 @@ class Sphinxsearch
 		$this->sphinx->setMatchMode($mode);
 	}
 
+	public function setSortMode($mode, $str)
+	{
+		$this->sphinx->setSortMode($mode, $str);
+	}
+
 	/**
      * Set the desired search filter.
      *
@@ -106,7 +111,7 @@ class Sphinxsearch
 	 */
 	public function search($query, array $indexes)
 	{
-		$query = $this->sphinx->escapeString($query);
+		// $query = $this->sphinx->escapeString($query);
 
 		$results = array();
 		foreach( $indexes as $label => $options ) {
@@ -141,4 +146,9 @@ class Sphinxsearch
 		 */
 		return $results;
 	}
+
+  public function escapeString($string)
+  {
+    return $this->sphinx->escapeString($string);
+  }
 }
