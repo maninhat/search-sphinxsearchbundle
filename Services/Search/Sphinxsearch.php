@@ -144,7 +144,7 @@ class Sphinxsearch
 		/**
 		 * FIXME: Throw an exception if $results is empty?
 		 */
-		return $results;
+        return new ResultCollection($results);
 	}
 
   public function escapeString($string)

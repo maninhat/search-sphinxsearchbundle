@@ -21,6 +21,7 @@ class SphinxsearchExtension extends Extension
 		$loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
 		$loader->load('sphinxsearch.xml');
+        $loader->load('paginate.xml');
 
 		/**
 		 * Indexer.
