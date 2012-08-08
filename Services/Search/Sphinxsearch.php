@@ -2,6 +2,8 @@
 
 namespace Search\SphinxsearchBundle\Services\Search;
 
+use Search\SphinxsearchBundle\Services\Exception\ConnectionException;
+
 class Sphinxsearch
 {
 	/**
@@ -137,8 +139,11 @@ class Sphinxsearch
 			 * Perform the query.
 			 */
 			$results[$label] = $this->sphinx->query($query, $this->indexes[$label]['index_name']);
-			if( $results[$label]['status'] !== SEARCHD_OK )
+            if ($this->sphinx->IsConnectError()) {
+				throw new ConnectionException(sprintf('Searching index "%s" for "%s" failed with error "%s".', $label, $query, $this->sphinx->getLastError()));
+            } elseif($results[$label]['status'] !== SEARCHD_OK) {
 				throw new \RuntimeException(sprintf('Searching index "%s" for "%s" failed with error "%s".', $label, $query, $this->sphinx->getLastError()));
+            }
 		}
 
 		/**
