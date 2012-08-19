@@ -1,0 +1,31 @@
+{
+    "name":"maninhat/Search-SphinxsearchBundle",
+    "description":"Sphinx search bundle for Symfony 2.",
+    "keywords":["sphinx", "symfony2"],
+    "type":"symfony-bundle",
+    "license":"MIT",
+    "authors":[
+        {
+            "name":"timewasted"
+
+        },
+        {
+            "name":"timewasted"
+
+        },
+        {
+            "name":"maninhat"
+
+        }
+    ],
+    "require":{
+        "php":">=5.3.0",
+        "symfony/framework-bundle":"2.1.*"
+    },
+    "autoload":{
+        "psr-0":{
+            "Search/SphinxsearchBundle":""
+        }
+    },
+    "target-dir":"Search/SphinxsearchBundle"
+}
