@@ -1,5 +1,5 @@
 {
-    "name":"search/sphinxsearchbundle",
+    "name":"maninhat/search-sphinxsearchbundle",
     "description":"Sphinx search bundle for Symfony 2.",
     "keywords":["sphinx", "symfony2"],
     "type":"symfony-bundle",
@@ -24,7 +24,7 @@
     },
     "autoload":{
         "psr-0":{
-            "Search/SphinxsearchBundle":""
+            "Search\\SphinxsearchBundle":""
         }
     },
     "target-dir":"Search/SphinxsearchBundle"
