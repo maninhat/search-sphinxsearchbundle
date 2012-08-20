@@ -90,9 +90,10 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
             ->arrayNode('mapping')
+            ->useAttributeAsKey('key')
             ->prototype('array')
 
-            ->useAttributeAsKey('key')
+
 
             ->prototype('scalar')->end()
             ->end()
