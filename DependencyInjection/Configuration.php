@@ -62,8 +62,7 @@ class Configuration implements ConfigurationInterface
            ->prototype('array')
 
            ->useAttributeAsKey('name')
-           ->prototype('array')
-           ->useAttributeAsKey('key')
+
            ->prototype('scalar')->end()
                       /*  ->scalarNode('name') ->isRequired()->end()
                         ->scalarNode('index') ->isRequired()->end()
