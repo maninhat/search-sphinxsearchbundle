@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
 		$this->addIndexerSection($rootNode);
 		$this->addIndexesSection($rootNode);
 		$this->addSearchdSection($rootNode);
-
+        $this->addMappingSection($rootNode);
 		return $treeBuilder;
 	}
 
@@ -40,59 +40,35 @@ class Configuration implements ConfigurationInterface
 
 	private function addIndexesSection(ArrayNodeDefinition $node)
 	{
-		/*$node
-			->children()
-				->arrayNode('indexes')
-					->isRequired()
-					->requiresAtLeastOneElement()
-					->useAttributeAsKey('key')
-					->prototype('array')
-						->requiresAtLeastOneElement()
-						->useAttributeAsKey('key')
-						->prototype('array')
-							->useAttributeAsKey('key')
-							->prototype('scalar')->end()
-						->end()
-					->end()
-				->end()
-			->end(); */
-       $node
-              ->children()
-                  ->arrayNode('indexes')
-           ->prototype('array')
+        $node
+            ->children()
+            ->arrayNode('indexes')
+            ->isRequired()
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('key')
+            ->prototype('array')
+            ->requiresAtLeastOneElement()
+            ->useAttributeAsKey('key')
+            ->prototype('array')
+            ->useAttributeAsKey('key')
+            ->prototype('scalar')->end()
+            ->end()
+            ->end()
+            ->end()
+            ->end();
 
-           ->useAttributeAsKey('name')
+        /*
+        $node
+            ->children()
+            ->arrayNode('indexes')
+            ->prototype('array')
 
-           ->prototype('scalar')->end()
-                      /*  ->scalarNode('name') ->isRequired()->end()
-                        ->scalarNode('index') ->isRequired()->end()
-                        ->scalarNode('class') ->isRequired()->end()
-                        ->scalarNode('model_name') ->isRequired()->end()*/
-                     // ->isRequired()
-                    //  ->requiresAtLeastOneElement()
-                    //  ->useAttributeAsKey('key')
-         //  ->useAttributeAsKey('key')
-                   /* ->children()
+            ->useAttributeAsKey('name')
 
-
-                      //  ->requiresAtLeastOneElement()
-                          ->arrayNode('index')
-                               ->useAttributeAsKey('key')
-                               ->prototype('array')
-                                    ->requiresAtLeastOneElement()
-                                    ->useAttributeAsKey('key')
-                                        ->prototype('array')
-                                        ->useAttributeAsKey('key')
-                                        ->prototype('scalar')->end()
-                                    ->end()
-                                ->end()
-                          ->end()
-                          ->scalarNode('class') ->isRequired()->end()
-                          ->scalarNode('model_name') ->isRequired()->end()
-*/
-                      ->end()
-                  ->end()
-              ->end();
+            ->prototype('scalar')->end()
+                ->end()
+            ->end()
+            ->end();  */
     }
 
 	private function addSearchdSection(ArrayNodeDefinition $node)
@@ -109,4 +85,18 @@ class Configuration implements ConfigurationInterface
 				->end()
 			->end();
 	}
+
+    private function addMappingSection(ArrayNodeDefinition $node){
+        $node
+            ->children()
+            ->arrayNode('mapping')
+            ->prototype('array')
+
+            ->useAttributeAsKey('key')
+
+            ->prototype('scalar')->end()
+            ->end()
+            ->end()
+            ->end();
+    }
 }
