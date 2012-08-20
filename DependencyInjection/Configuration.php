@@ -74,8 +74,8 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                           ->end()
-                          ->scalarNode('class') ->isRequired()->end
-                          ->scalarNode('model_name') ->isRequired()->end
+                          ->scalarNode('class') ->isRequired()->end()
+                          ->scalarNode('model_name') ->isRequired()->end()
                       ->end()
                   ->end()
               ->end();
