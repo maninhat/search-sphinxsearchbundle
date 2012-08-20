@@ -429,11 +429,11 @@ class SphinxClient
     function SphinxClient ()
     {
         // per-client-object settings
-        $CI=&get_instance();
 
-        $this->_host		= $CI->config->item('sphinx_ip');
 
-        $this->_port		= $CI->config->item('sphinx_port');
+        $this->_host		= "localhost";
+
+        $this->_port		= 9312;
         $this->_path		= false;
         $this->_socket		= false;
 
