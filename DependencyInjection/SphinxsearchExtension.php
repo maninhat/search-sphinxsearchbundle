@@ -36,8 +36,9 @@ class SphinxsearchExtension extends Extension
         $indexes = array();
 
 
-     //   die(var_dump($indexes,$config['indexes']));
 
+
+        die(var_dump($config));
 
         foreach ($config['indexes'] as $label => $index) {
             foreach ($index as $name => $fields) {
