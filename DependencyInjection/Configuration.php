@@ -62,7 +62,7 @@ class Configuration implements ConfigurationInterface
                       ->isRequired()
                       ->requiresAtLeastOneElement()
                       ->useAttributeAsKey('key')
-                      ->children()
+                      ->prototype('array')
                           ->arrayNode('index')
                                ->useAttributeAsKey('key')
                                ->prototype('array')
