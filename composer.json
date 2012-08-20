@@ -1,5 +1,5 @@
 {
-    "name":"maninhat/Search-SphinxsearchBundle",
+    "name":"maninhat/search-sphinxsearchbundle",
     "description":"Sphinx search bundle for Symfony 2.",
     "keywords":["sphinx", "symfony2"],
     "type":"symfony-bundle",
