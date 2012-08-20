@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
 
 	private function addIndexesSection(ArrayNodeDefinition $node)
 	{
-		$node
+		/*$node
 			->children()
 				->arrayNode('indexes')
 					->isRequired()
@@ -55,8 +55,31 @@ class Configuration implements ConfigurationInterface
 						->end()
 					->end()
 				->end()
-			->end();
-	}
+			->end(); */
+       $node
+              ->children()
+                  ->arrayNode('indexes')
+                      ->isRequired()
+                      ->requiresAtLeastOneElement()
+                      ->useAttributeAsKey('key')
+                      ->children()
+                          ->arrayNode('index')
+                               ->useAttributeAsKey('key')
+                               ->prototype('array')
+                                    ->requiresAtLeastOneElement()
+                                    ->useAttributeAsKey('key')
+                                        ->prototype('array')
+                                        ->useAttributeAsKey('key')
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                ->end()
+                          ->end()
+                          ->scalarNode('class')->default(false)->end
+                          ->scalarNode('model_name')->default(false)->end
+                      ->end()
+                  ->end()
+              ->end();
+    }
 
 	private function addSearchdSection(ArrayNodeDefinition $node)
 	{

@@ -99,7 +99,7 @@ class Sphinxsearch
 	 * @param string $query The query string that we are searching for.
 	 * @param array $indexes The indexes to perform the search on.
 	 *
-	 * @return array The results of the search.
+	 * @return ResultCollection The results of the search.
 	 *
 	 * $indexes should have the format:
 	 *
