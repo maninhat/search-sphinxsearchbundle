@@ -66,7 +66,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
 
 
-                        ->requiresAtLeastOneElement()
+                      //  ->requiresAtLeastOneElement()
                           ->arrayNode('index')
                                ->useAttributeAsKey('key')
                                ->prototype('array')
