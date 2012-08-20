@@ -62,7 +62,7 @@ class Configuration implements ConfigurationInterface
                       ->isRequired()
                     //  ->requiresAtLeastOneElement()
                     //  ->useAttributeAsKey('key')
-           ->useAttributeAsKey('key')
+         //  ->useAttributeAsKey('key')
                     ->children()
 
 
