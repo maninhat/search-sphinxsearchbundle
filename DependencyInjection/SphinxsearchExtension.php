@@ -38,7 +38,7 @@ class SphinxsearchExtension extends Extension
 
 
 
-        die(var_dump($config));
+     //   die(var_dump($config));
 
         foreach ($config['indexes'] as $label => $index) {
             foreach ($index as $name => $fields) {
@@ -50,6 +50,7 @@ class SphinxsearchExtension extends Extension
             }
         }
         $container->setParameter('search.sphinxsearch.indexes', $indexes);
+        $container->setParameter('search.sphinxsearch.mapping', $config['mapping']);
 
         /**
          * Searchd.
