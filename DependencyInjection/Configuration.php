@@ -59,6 +59,11 @@ class Configuration implements ConfigurationInterface
        $node
               ->children()
                   ->arrayNode('indexes')
+                     ->children()
+                        ->scalarNode('name') ->isRequired()->end()
+                        ->scalarNode('index') ->isRequired()->end()
+                        ->scalarNode('class') ->isRequired()->end()
+                        ->scalarNode('model_name') ->isRequired()->end()
                      // ->isRequired()
                     //  ->requiresAtLeastOneElement()
                     //  ->useAttributeAsKey('key')
@@ -80,8 +85,8 @@ class Configuration implements ConfigurationInterface
                           ->end()
                           ->scalarNode('class') ->isRequired()->end()
                           ->scalarNode('model_name') ->isRequired()->end()
-
-                      ->end() */
+*/
+                      ->end()
                   ->end()
               ->end();
     }
