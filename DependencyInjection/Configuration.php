@@ -59,7 +59,7 @@ class Configuration implements ConfigurationInterface
        $node
               ->children()
                   ->arrayNode('indexes')
-                      ->isRequired()
+                     // ->isRequired()
                     //  ->requiresAtLeastOneElement()
                     //  ->useAttributeAsKey('key')
          //  ->useAttributeAsKey('key')
