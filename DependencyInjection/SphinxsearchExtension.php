@@ -11,52 +11,54 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class SphinxsearchExtension extends Extension
 {
-	public function load(array $configs, ContainerBuilder $container)
-	{
-		$processor = new Processor();
-		$configuration = new Configuration();
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $processor = new Processor();
+        $configuration = new Configuration();
 
-		$config = $processor->processConfiguration($configuration, $configs);
+        $config = $processor->processConfiguration($configuration, $configs);
 
-		$loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-		$loader->load('sphinxsearch.xml');
+        $loader->load('sphinxsearch.xml');
         $loader->load('paginate.xml');
 
-		/**
-		 * Indexer.
-		 */
-		if( isset($config['indexer']) ) {
-			$container->setParameter('search.sphinxsearch.indexer.bin', $config['indexer']['bin']);
-		}
+        /**
+         * Indexer.
+         */
+        if (isset($config['indexer'])) {
+            $container->setParameter('search.sphinxsearch.indexer.bin', $config['indexer']['bin']);
+        }
 
-		/**
-		 * Indexes.
-		 */
-		$indexes = array();
-		foreach( $config['indexes'] as $label => $index ) {
-			foreach( $index as $name => $fields ) {
-				if( !isset($indexes[$label]) )
-					$indexes[$label] = array('index_name' => $name, 'field_weights' => array());
+        /**
+         * Indexes.
+         */
+        $indexes = array();
 
-				foreach( $fields as $field => $weight )
-					$indexes[$label]['field_weights'][$field] = $weight;
-			}
-		}
-		$container->setParameter('search.sphinxsearch.indexes', $indexes);
+        die(var_dump($indexes));
+        foreach ($config['indexes'] as $label => $index) {
+            foreach ($index as $name => $fields) {
+                if (!isset($indexes[$label]))
+                    $indexes[$label] = array('index_name' => $name, 'field_weights' => array());
 
-		/**
-		 * Searchd.
-		 */
-		if( isset($config['searchd']) ) {
-			$container->setParameter('search.sphinxsearch.searchd.host', $config['searchd']['host']);
-			$container->setParameter('search.sphinxsearch.searchd.port', $config['searchd']['port']);
-			$container->setParameter('search.sphinxsearch.searchd.socket', $config['searchd']['socket']);
-		}
-	}
+                foreach ($fields as $field => $weight)
+                    $indexes[$label]['field_weights'][$field] = $weight;
+            }
+        }
+        $container->setParameter('search.sphinxsearch.indexes', $indexes);
 
-	public function getAlias()
-	{
-		return 'sphinxsearch';
-	}
+        /**
+         * Searchd.
+         */
+        if (isset($config['searchd'])) {
+            $container->setParameter('search.sphinxsearch.searchd.host', $config['searchd']['host']);
+            $container->setParameter('search.sphinxsearch.searchd.port', $config['searchd']['port']);
+            $container->setParameter('search.sphinxsearch.searchd.socket', $config['searchd']['socket']);
+        }
+    }
+
+    public function getAlias()
+    {
+        return 'sphinxsearch';
+    }
 }
