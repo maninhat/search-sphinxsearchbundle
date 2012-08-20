@@ -62,9 +62,10 @@ class Configuration implements ConfigurationInterface
                       ->isRequired()
                     //  ->requiresAtLeastOneElement()
                     //  ->useAttributeAsKey('key')
-                      ->children()
-                        ->useAttributeAsKey('key')
-                        ->prototype('array')
+           ->useAttributeAsKey('key')
+                    ->children()
+
+
                         ->requiresAtLeastOneElement()
                           ->arrayNode('index')
                                ->useAttributeAsKey('key')
@@ -79,7 +80,7 @@ class Configuration implements ConfigurationInterface
                           ->end()
                           ->scalarNode('class') ->isRequired()->end()
                           ->scalarNode('model_name') ->isRequired()->end()
-                        ->end()
+
                       ->end()
                   ->end()
               ->end();
