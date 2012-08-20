@@ -92,7 +92,7 @@ class Configuration implements ConfigurationInterface
             ->arrayNode('mapping')
             ->useAttributeAsKey('key')
             ->prototype('array')
-
+            ->useAttributeAsKey('key')
 
 
             ->prototype('scalar')->end()
