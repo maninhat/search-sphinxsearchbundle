@@ -59,7 +59,9 @@ class Configuration implements ConfigurationInterface
        $node
               ->children()
                   ->arrayNode('indexes')
-                     ->children()
+           ->prototype('array')
+
+           ->useAttributeAsKey('name')
                         ->scalarNode('name') ->isRequired()->end()
                         ->scalarNode('index') ->isRequired()->end()
                         ->scalarNode('class') ->isRequired()->end()
