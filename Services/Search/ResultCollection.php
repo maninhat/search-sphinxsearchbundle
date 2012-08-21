@@ -21,7 +21,7 @@ class ResultCollection implements CollectionInterface
 
     public function getIterator()
     {
-        return new ArrayIterator($this->results);
+        return new \ArrayIterator($this->results);
     }
 
     public function count()
