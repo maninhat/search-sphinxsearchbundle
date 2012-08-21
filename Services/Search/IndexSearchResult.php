@@ -43,7 +43,7 @@ class IndexSearchResult implements SearchResultInterface
         $this->rawResults = $rawResults;
         $this->indexName = $indexName;
         $this->totalFound = $rawResults['total_found'];
-      //  $this->mapping = new MappingCollection($mapping);
+        $this->mapping = new MappingCollection($mapping);
         $this->em = $em;
         // Normalize sphinxsearch result array
         if (array_key_exists('matches', $rawResults)) {
