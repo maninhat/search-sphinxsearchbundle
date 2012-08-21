@@ -6,12 +6,12 @@ use \Doctrine\Common\Collections\ArrayCollection;
 
 class MappingCollection extends ArrayCollection
 {
-    protected $_elements;
+  //  protected $_elements;
 
 
     public function getAvailableParameters(){
         $parameters=array();
-        foreach($this->_elements as $element){
+        foreach($this->toArray() as $element){
             if(!in_array($element['parameter'],$parameters)){
                  $parameters[]=$element['parameter'];
             }
@@ -26,7 +26,7 @@ class MappingCollection extends ArrayCollection
      */
     public function findRepository($parameter,$value){
 
-        foreach($this->_elements as $element){
+        foreach($this->toArray() as $element){
             if($element['parameter']==$parameter && $element['value']==$value){
                 return $element['repository'];
             }
