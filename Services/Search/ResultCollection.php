@@ -23,7 +23,7 @@ class ResultCollection implements CollectionInterface
 
     public function getIterator()
     {
-        return new ArrayIterator($this->results);
+        return new \ArrayIterator($this->results);
     }
 
     /**
@@ -43,3 +43,4 @@ class ResultCollection implements CollectionInterface
         return $this->results[$indexName];
     }
 }
+
