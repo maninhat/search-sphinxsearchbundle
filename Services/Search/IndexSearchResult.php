@@ -107,6 +107,6 @@ class IndexSearchResult implements SearchResultInterface
             }
 
         }
-
+        return $Result;
     }
 }
