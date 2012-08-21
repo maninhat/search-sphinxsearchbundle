@@ -40,6 +40,7 @@ class IndexSearchResult implements SearchResultInterface
 
     public function __construct($indexName, $rawResults, array $mapping = array(), EntityManager $em = null)
     {
+        echo 'IndexSearchResult';
         $this->rawResults = $rawResults;
         $this->indexName = $indexName;
         $this->totalFound = $rawResults['total_found'];

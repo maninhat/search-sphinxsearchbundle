@@ -73,7 +73,7 @@ class Sphinxsearch
         $this->em=$em;
         $this->mapping=$mapping;
 
-        die(var_dump('search_init'));
+
 		$this->sphinx = new \SphinxClient();
 		if( $this->socket !== null )
 			$this->sphinx->setServer($this->socket);
