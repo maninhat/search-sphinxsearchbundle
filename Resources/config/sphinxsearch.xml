@@ -21,6 +21,8 @@
             <argument>%search.sphinxsearch.searchd.port%</argument>
             <argument>%search.sphinxsearch.searchd.socket%</argument>
             <argument>%search.sphinxsearch.indexes%</argument>
+            <argument>%search.sphinxsearch.mapping%</argument>
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
     </services>
 </container>

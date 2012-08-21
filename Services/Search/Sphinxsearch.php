@@ -3,7 +3,7 @@
 namespace Search\SphinxsearchBundle\Services\Search;
 
 use Search\SphinxsearchBundle\Services\Exception\ConnectionException;
-
+use Doctrine\ORM\EntityManager;
 class Sphinxsearch
 {
 	/**
@@ -44,15 +44,17 @@ class Sphinxsearch
 	 */
 	private $sphinx;
 
-	/**
+    /**
      * Constructor.
      *
-	 * @param string $host The server's host name/IP.
-	 * @param string $port The port that the server is listening on.
-	 * @param string $socket The UNIX socket that the server is listening on.
-	 * @param array $indexes The list of indexes that can be used.
-	 */
-	public function __construct($host = 'localhost', $port = '9312', $socket = null, array $indexes = array())
+     * @param string $host The server's host name/IP.
+     * @param string $port The port that the server is listening on.
+     * @param string $socket The UNIX socket that the server is listening on.
+     * @param array $indexes The list of indexes that can be used.
+     * @param array $mapping The list of mapping
+     * @param \Doctrine\ORM\EntityManager $em  for db query
+     */
+	public function __construct($host = 'localhost', $port = '9312', $socket = null, array $indexes = array(),array $mapping = array(), EntityManager $em = null)
 	{
 		$this->host = $host;
 		$this->port = $port;
