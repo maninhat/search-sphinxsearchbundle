@@ -26,11 +26,18 @@ class ResultCollection implements CollectionInterface
         return new ArrayIterator($this->results);
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return count($this->results);
     }
 
+    /**
+     * @param $indexName
+     * @return IndexSearchResult
+     */
     public function get($indexName)
     {
         return $this->results[$indexName];
