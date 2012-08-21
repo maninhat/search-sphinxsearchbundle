@@ -1,6 +1,7 @@
 <?php
 
 namespace Search\SphinxsearchBundle\Services\Search;
+use Doctrine\ORM\EntityManager;
 
 class ResultCollection implements CollectionInterface
 {
@@ -11,11 +12,12 @@ class ResultCollection implements CollectionInterface
      */
     private $results;
 
-    public function __construct($rawResults)
+
+    public function __construct($rawResults, array $mapping = array(), EntityManager $em = null)
     {
-        foreach ($rawResults as $indexName => $result)
-        {
-            $this->results[$indexName] = new IndexSearchResult($indexName, $result);
+       // echo 'result_collect';
+        foreach ($rawResults as $indexName => $result) {
+            $this->results[$indexName] = new IndexSearchResult($indexName, $result,$mapping,$em);
         }
     }
 
@@ -24,13 +26,21 @@ class ResultCollection implements CollectionInterface
         return new \ArrayIterator($this->results);
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return count($this->results);
     }
 
+    /**
+     * @param $indexName
+     * @return IndexSearchResult
+     */
     public function get($indexName)
     {
         return $this->results[$indexName];
     }
 }
+
