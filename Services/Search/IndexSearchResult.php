@@ -99,7 +99,7 @@ class IndexSearchResult implements SearchResultInterface
                 $repoName = $mapping->findRepository($matchedAttr, $value);
                 if ($repoName) {
                     $repo = $this->em->getRepository($repoName);
-                    $element = $repo->findById($match['attrs']['id']);
+                    $element = $repo->findOneById($match['attrs']['id']);
                     if ($element) {
                         $Result->add($element);
                     }
