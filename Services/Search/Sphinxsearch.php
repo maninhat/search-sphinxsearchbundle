@@ -21,6 +21,16 @@ class Sphinxsearch
 	 */
 	private $socket;
 
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $em;
+
+
+    /**
+     * @var array
+     */
+    private $mapping;
 	/**
 	 * @var array $indexes
 	 *
@@ -60,7 +70,8 @@ class Sphinxsearch
 		$this->port = $port;
 		$this->socket = $socket;
 		$this->indexes = $indexes;
-
+        $this->em=$em;
+        $this->mapping=$mapping;
 		$this->sphinx = new \SphinxClient();
 		if( $this->socket !== null )
 			$this->sphinx->setServer($this->socket);
@@ -151,7 +162,7 @@ class Sphinxsearch
 		/**
 		 * FIXME: Throw an exception if $results is empty?
 		 */
-        return new ResultCollection($results);
+        return new ResultCollection($results,$this->mapping,$this->em);
 	}
 
   public function escapeString($string)
