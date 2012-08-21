@@ -40,12 +40,13 @@ class IndexSearchResult implements SearchResultInterface
 
     public function __construct($indexName, $rawResults, array $mapping = array(), EntityManager $em = null)
     {
-        die('IndexSearchResult');
+
         $this->rawResults = $rawResults;
         $this->indexName = $indexName;
         $this->totalFound = $rawResults['total_found'];
         $this->mapping = new MappingCollection($mapping);
         $this->em = $em;
+        //die('IndexSearchResult');
         // Normalize sphinxsearch result array
         if (array_key_exists('matches', $rawResults)) {
             $rawMatches = $rawResults['matches'];

@@ -15,7 +15,7 @@ class ResultCollection implements CollectionInterface
 
     public function __construct($rawResults, array $mapping = array(), EntityManager $em = null)
     {
-        echo 'result_collect';
+       // echo 'result_collect';
         foreach ($rawResults as $indexName => $result) {
             $this->results[$indexName] = new IndexSearchResult($indexName, $result,$mapping,$em);
         }
