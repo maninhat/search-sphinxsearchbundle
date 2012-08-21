@@ -68,7 +68,7 @@ sphinxsearch:
            repository: "GIDiaBundle:Page"
            parameter: "model_name"
            value: 2
-
+```
 At least one index must be defined, and you may define as many as you like.
 
 In the above sample configuration, `Categories` is used as a label for the index named `%sphinxsearch_index_categories%` (as defined in your `sphinx.conf`).  This allows you to avoid having to hard code raw index names inside of your code.  You can also optionally define field weights to be applied when searching.  In the case of the `Items` index, `Description` has a low weight, while `SKU` is weighted significantly higher.
