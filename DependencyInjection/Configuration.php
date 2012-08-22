@@ -67,7 +67,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('name')->end()
                     ->arrayNode('field_weights')
                         ->useAttributeAsKey('key')
-                        ->prototype('array')
+                        ->prototype('scalar')
                         ->end()
                     ->end()
                     ->arrayNode('index')->end()
