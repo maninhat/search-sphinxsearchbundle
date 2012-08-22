@@ -60,6 +60,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->arrayNode('indexes')
+                ->useAttributeAsKey('name')
                 ->children()
                    /*
                     ->scalarNode('name')->end()
