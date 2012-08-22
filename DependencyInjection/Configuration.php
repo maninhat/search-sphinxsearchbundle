@@ -60,16 +60,16 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->arrayNode('indexes')
-                ->isRequired()
-
+                ->children()
+                   /*
                     ->scalarNode('name')->end()
                     ->arrayNode('field_weights')
                         ->useAttributeAsKey('key')
                         ->prototype('array')
                         ->end()
                     ->end()
-                    ->arrayNode('index')->end()
-
+                    ->arrayNode('index')->end()    */
+                ->end()
             ->end();
 
     }
