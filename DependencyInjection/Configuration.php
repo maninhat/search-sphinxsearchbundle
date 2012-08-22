@@ -61,8 +61,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('indexes')
                 ->isRequired()
-                ->useAttributeAsKey('name')
-                ->children()
+
                     ->scalarNode('name')->end()
                     ->arrayNode('field_weights')
                         ->useAttributeAsKey('key')
@@ -70,7 +69,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                     ->arrayNode('index')->end()
-                ->end()
+
             ->end();
 
     }
