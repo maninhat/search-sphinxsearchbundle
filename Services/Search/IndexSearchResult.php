@@ -85,12 +85,9 @@ class IndexSearchResult implements SearchResultInterface
      */
     public function getMappedMatches()
     {
-
         $mapping = $this->mapping;
         $parameters = $mapping->getAvailableParameters();
-        var_dump($parameters);
         $matches = $this->matches;
-        var_dump($matches);
         $Result = new ArrayCollection();
 
         foreach ($matches as $match) {
@@ -110,7 +107,6 @@ class IndexSearchResult implements SearchResultInterface
             }
 
         }
-        var_dump($Result);
         return $Result;
     }
 }

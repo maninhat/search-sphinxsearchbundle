@@ -2,13 +2,15 @@
 
 namespace Search\SphinxsearchBundle\Services\Search;
 use Doctrine\ORM\EntityManager;
-use \Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class MappingCollection extends ArrayCollection
 {
   //  protected $_elements;
 
-
+    /**
+     * @return array
+     */
     public function getAvailableParameters(){
         $parameters=array();
         foreach($this->toArray() as $element){
