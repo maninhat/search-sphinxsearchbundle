@@ -61,7 +61,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('indexes')
                 ->isRequired()
-                ->requiresAtLeastOneElement()
                 ->children()
                     ->scalarNode('name')->end()
                     ->arrayNode('field_weights')
