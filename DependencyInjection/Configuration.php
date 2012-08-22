@@ -70,7 +70,7 @@ class Configuration implements ConfigurationInterface
                         ->prototype('scalar')
                         ->end()
                     ->end()
-                    ->arrayNode('index')->end()
+                    ->arrayNode('index')->prototype('scalar')->end()->end()
                 ->end()
             ->end();
 
