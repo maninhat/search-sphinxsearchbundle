@@ -57,18 +57,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->end();
 
-        /*
-        $node
-            ->children()
-            ->arrayNode('indexes')
-            ->prototype('array')
 
-            ->useAttributeAsKey('name')
-
-            ->prototype('scalar')->end()
-                ->end()
-            ->end()
-            ->end();  */
     }
 
 	private function addSearchdSection(ArrayNodeDefinition $node)
