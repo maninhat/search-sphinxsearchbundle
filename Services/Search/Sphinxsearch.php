@@ -141,8 +141,19 @@ class Sphinxsearch
 			/**
 			 * Set the offset and limit for the returned results.
 			 */
+
+            // On-going bug even in 1.2.0
+            // http://sphinxsearch.com/bugs/view.php?id=208
+            $maxMatches = $defaultMaxMatches = 1000;
+            if (isset($options['max_matches'])) {
+                $maxMatches = (int) $options['max_matches'];
+                if ($maxMatches === 0) {
+                    $maxMatches = $defaultMaxMatches;
+                }
+            }
+
 			if( isset($options['result_offset']) && isset($options['result_limit']) )
-				$this->sphinx->setLimits($options['result_offset'], $options['result_limit']);
+				$this->sphinx->setLimits($options['result_offset'], $options['result_limit'], $maxMatches);
 
 			/**
 			 * Weight the individual fields.
@@ -154,7 +165,8 @@ class Sphinxsearch
 			 * Perform the query.
 			 */
 			$results[$label] = $this->sphinx->query($query, $this->indexes[$label]['index_name']);
-            if ($this->sphinx->IsConnectError()) {
+
+            if (is_callable(array($this->sphinx, 'IsConnectError')) && $this->sphinx->IsConnectError()) { // PHP version
 				throw new ConnectionException(sprintf('Searching index "%s" for "%s" failed with error "%s".', $label, $query, $this->sphinx->getLastError()));
             } elseif($results[$label]['status'] !== SEARCHD_OK) {
 				throw new \RuntimeException(sprintf('Searching index "%s" for "%s" failed with error "%s".', $label, $query, $this->sphinx->getLastError()));
