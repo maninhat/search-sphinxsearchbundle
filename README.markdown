@@ -45,13 +45,19 @@ public function registerBundles()
 ``` yaml
 sphinxsearch:
     indexes:
-        Categories:
-            %sphinxsearch_index_categories%: ~
-        Items:
-            %sphinxsearch_index_items%:
-                Name:        5
-                SKU:         10
-                Description: 1
+        - name: allSite                      #Index label
+          index:                             #list of indexes
+              - %sphinxsearch_index_pages%   #index name
+              - %sphinxsearch_index_books%
+          field_weights:
+              label: 10
+              content: 5
+        - name: books
+          index:
+              - %sphinxsearch_index_books%
+          field_weights:
+              label: 10
+              content: 5
     searchd:
         host:   %sphinxsearch_host%
         port:   %sphinxsearch_port%
@@ -61,9 +67,9 @@ sphinxsearch:
 
     mapping:
         Book:
-           repository: "GIDiaBundle:Book"
-           parameter: "model_name"
-           value: 1
+           repository: "GIDiaBundle:Book"    #Doctrine repository name
+           parameter: "model_name"           #returned by sphinx. By this parameter Bundle will choose repository
+           value: 1                          #uniq value for parameter
         Page:
            repository: "GIDiaBundle:Page"
            parameter: "model_name"
@@ -71,7 +77,7 @@ sphinxsearch:
 ```
 At least one index must be defined, and you may define as many as you like.
 
-In the above sample configuration, `Categories` is used as a label for the index named `%sphinxsearch_index_categories%` (as defined in your `sphinx.conf`).  This allows you to avoid having to hard code raw index names inside of your code.  You can also optionally define field weights to be applied when searching.  In the case of the `Items` index, `Description` has a low weight, while `SKU` is weighted significantly higher.
+In the above sample configuration, `allSite` is used as a label for the index named `%sphinxsearch_index_pages%` and  `%sphinxsearch_index_books%` (as defined in your `sphinx.conf`).  This allows you to avoid having to hard code raw index names inside of your code.  You can also optionally define field weights to be applied when searching.
 
 ### EXAMPLE
 
