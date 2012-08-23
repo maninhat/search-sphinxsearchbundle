@@ -4,7 +4,7 @@ namespace Search\SphinxsearchBundle\Services\Search;
 
 
 
-interface ViewSphinxResultItemInterface
+interface SearchableInterface
 {
     /**
      * @abstract

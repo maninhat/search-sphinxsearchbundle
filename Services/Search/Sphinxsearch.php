@@ -28,7 +28,7 @@ class Sphinxsearch
 
 
     /**
-     * @var array
+     * @var MappingCollection
      */
     private $mapping;
 	/**
@@ -71,7 +71,7 @@ class Sphinxsearch
 		$this->socket = $socket;
 		$this->indexes = $indexes;
         $this->em=$em;
-        $this->mapping=$mapping;
+        $this->mapping=new MappingCollection($mapping);
 
 
 		$this->sphinx = new \SphinxClient();
@@ -141,7 +141,12 @@ class Sphinxsearch
 			/**
 			 * Set the offset and limit for the returned results.
 			 */
-			if( isset($options['result_offset']) && isset($options['result_limit']) )
+			if(
+                isset($options['result_offset'])
+                && isset($options['result_limit'])
+                && is_numeric($options['result_offset'])
+                && is_numeric($options['result_limit'])
+            )
 				$this->sphinx->setLimits($options['result_offset'], $options['result_limit']);
 
 			/**
@@ -153,7 +158,7 @@ class Sphinxsearch
 			/**
 			 * Perform the query.
 			 */
-			$results[$label] = $this->sphinx->query($query, $this->indexes[$label]['index_name']);
+			$results[$label] = $this->sphinx->query($query, implode(' ',$this->indexes[$label]["index"]));
             if ($this->sphinx->IsConnectError()) {
 				throw new ConnectionException(sprintf('Searching index "%s" for "%s" failed with error "%s".', $label, $query, $this->sphinx->getLastError()));
             } elseif($results[$label]['status'] !== SEARCHD_OK) {

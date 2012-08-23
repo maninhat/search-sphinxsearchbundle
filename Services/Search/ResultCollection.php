@@ -13,7 +13,7 @@ class ResultCollection implements CollectionInterface
     private $results;
 
 
-    public function __construct($rawResults, array $mapping = array(), EntityManager $em = null)
+    public function __construct($rawResults, MappingCollection $mapping = null, EntityManager $em = null)
     {
        // echo 'result_collect';
         foreach ($rawResults as $indexName => $result) {

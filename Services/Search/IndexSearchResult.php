@@ -38,13 +38,13 @@ class IndexSearchResult implements SearchResultInterface
      */
     private $em;
 
-    public function __construct($indexName, $rawResults, array $mapping = array(), EntityManager $em = null)
+    public function __construct($indexName, $rawResults, MappingCollection $mapping =null , EntityManager $em = null)
     {
 
         $this->rawResults = $rawResults;
         $this->indexName = $indexName;
         $this->totalFound = $rawResults['total_found'];
-        $this->mapping = new MappingCollection($mapping);
+        $this->mapping = $mapping;
         $this->em = $em;
         //die('IndexSearchResult');
         // Normalize sphinxsearch result array
@@ -100,7 +100,7 @@ class IndexSearchResult implements SearchResultInterface
                 if ($repoName) {
                     $repo = $this->em->getRepository($repoName);
                     $element = $repo->findOneById($match['attrs']['id']);
-                    if ($element) {
+                    if ($element && is_a($element,'SearchableInterface')) {
                         $Result->add($element);
                     }
                 }
