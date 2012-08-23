@@ -3,6 +3,7 @@
 namespace Search\SphinxsearchBundle\Services\Search;
 use \Doctrine\ORM\EntityManager;
 use \Doctrine\Common\Collections\ArrayCollection;
+use Search\SphinxsearchBundle\Services\Exception\MappingException;
 
 class IndexSearchResult implements SearchResultInterface
 {
@@ -100,8 +101,14 @@ class IndexSearchResult implements SearchResultInterface
                 if ($repoName) {
                     $repo = $this->em->getRepository($repoName);
                     $element = $repo->findOneById($match['attrs']['id']);
-                    if ($element && is_a($element,'SearchableInterface')) {
-                        $Result->add($element);
+                    if ($element) {
+                        if($element instanceof  SearchableInterface)
+                        {
+                            $Result->add($element);
+                        }
+                        else{
+                            throw new  MappingException(sprintf('Object "%s" don\'t implements interface "SearchableInterface".',get_class($element)));
+                        }
                     }
                 }
             }
