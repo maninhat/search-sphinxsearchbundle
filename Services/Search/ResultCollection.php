@@ -6,12 +6,11 @@ use Doctrine\ORM\EntityManager;
 class ResultCollection implements CollectionInterface
 {
     /**
-     * Array of SearchResultInterface
+     * Array of objects of classes that implement SearchResultInterface
      *
-     * @var Array
+     * @var array
      */
-    private $results;
-
+    private $results = array();
 
     public function __construct($rawResults, array $mapping = array(), EntityManager $em = null)
     {
