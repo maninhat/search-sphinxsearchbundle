@@ -108,6 +108,25 @@ class Sphinxsearch
 		$this->sphinx->setFilter($attribute, $values, $exclude);
 	}
 
+    /**
+     * Set a filter range.
+     *
+     * @param string  $attribute The attribute to filter.
+     * @param integer $min       Minimum value.
+     * @param integer $max       Maxmimum value.
+     * @param boolean $exclude   If set to <code>true</code>, matching
+     *   documents are excluded from the result set.
+     *
+     * @return Returns <code>true</code> on success or <code>false</code> on
+     *   failure.
+     *
+     * @see \SphinxClient::setFilterRange
+     */
+    public function setFilterRange($attribute, $min, $max, $exclude = false)
+    {
+        $this->sphinx->setFilterRange($attribute, (int) $min, (int) $max, (bool) $exclude);
+    }
+
 	/**
      * Search for the specified query string.
      *
