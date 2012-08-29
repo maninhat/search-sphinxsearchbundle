@@ -91,7 +91,7 @@ class Sphinxsearch
 		$this->sphinx->setMatchMode($mode);
 	}
 
-	public function setSortMode($mode, $str)
+	public function setSortMode($mode, $str = '')
 	{
 		$this->sphinx->setSortMode($mode, $str);
 	}
