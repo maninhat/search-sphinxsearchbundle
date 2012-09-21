@@ -156,7 +156,7 @@ class Sphinxsearch
 		$fieldWeights = array();
 		$options = array(
             'result_offset' => 0,
-            'result_limit' => 0,
+            'result_limit' => 1000,
             'max_matches' => 1000,
         );
 
@@ -183,7 +183,8 @@ class Sphinxsearch
             }
         }
 
-        $this->sphinx->setLimits($options['result_offset'], $options['result_limit'], $options['max_matches']);
+        // There are assert() calls in the PHP version so always cast these
+        $this->sphinx->setLimits((int) $options['result_offset'], (int) $options['result_limit'], $options['max_matches']);
 
         foreach ($indexes as $label => $options) {
          if( !isset($this->indexes[$label]) ) {
