@@ -62,9 +62,10 @@ class Sphinxsearch
      * @param string $socket The UNIX socket that the server is listening on.
      * @param array $indexes The list of indexes that can be used.
      * @param array $mapping The list of mapping
+     * @param float $timeout Timeout in seconds.
      * @param \Doctrine\ORM\EntityManager $em  for db query
      */
-	public function __construct($host = 'localhost', $port = '9312', $socket = null, array $indexes = array(),array $mapping = array(), EntityManager $em = null)
+	public function __construct($host = 'localhost', $port = '9312', $socket = null, array $indexes = array(),array $mapping = array(), EntityManager $em = null, $timeout = 5)
 	{
 		$this->host = $host;
 		$this->port = $port;
@@ -79,6 +80,8 @@ class Sphinxsearch
 			$this->sphinx->setServer($this->socket);
 		else
 			$this->sphinx->setServer($this->host, $this->port);
+
+        $this->sphinx->setConnectTimeout((float) $timeout);
 	}
 
 	/**
@@ -150,47 +153,69 @@ class Sphinxsearch
 		// $query = $this->sphinx->escapeString($query);
 
 		$results = array();
-		foreach( $indexes as $label => $options ) {
-			/**
-			 * Ensure that the label corresponds to a defined index.
-			 */
-			if( !isset($this->indexes[$label]) )
-				continue;
+		$fieldWeights = array();
+		$options = array(
+            'result_offset' => 0,
+            'result_limit' => 0,
+            'max_matches' => 1000,
+        );
 
-			/**
-			 * Set the offset and limit for the returned results.
-			 */
+        // Combine the options of each index
+        foreach ($this->indexes as $label => $info) {
+            if (!isset($this->indexes[$label])) {
+                continue;
+            }
 
-            // On-going bug even in 1.2.0
-            // http://sphinxsearch.com/bugs/view.php?id=208
-            $maxMatches = $defaultMaxMatches = 1000;
-            if (isset($options['max_matches'])) {
-                $maxMatches = (int) $options['max_matches'];
-                if ($maxMatches === 0) {
-                    $maxMatches = $defaultMaxMatches;
+            if (!empty($info['field_weights'])) {
+                $fieldWeights = array_merge($fieldWeights, $info['field_weights']);
+            }
+        }
+
+        if (!empty($fieldWeights)) {
+            $this->sphinx->setFieldWeights($fieldWeights);
+        }
+
+        foreach ($options as $key => $value) {
+            foreach ($this->indexes as $label => $info) {
+                if (isset($info[$key])) {
+                    $options[$key] = (int) $info[$key];
                 }
             }
+        }
 
-			if( isset($options['result_offset']) && isset($options['result_limit']) )
-				$this->sphinx->setLimits($options['result_offset'], $options['result_limit'], $maxMatches);
+        $this->sphinx->setLimits($options['result_offset'], $options['result_limit'], $options['max_matches']);
 
-			/**
-			 * Weight the individual fields.
-			 */
-			if( !empty($this->indexes[$label]['field_weights']) )
-				$this->sphinx->setFieldWeights($this->indexes[$label]['field_weights']);
-
-			/**
-			 * Perform the query.
-			 */
-			$results[$label] = $this->sphinx->query($query, $this->indexes[$label]['index_name']);
-
-            if (is_callable(array($this->sphinx, 'IsConnectError')) && $this->sphinx->IsConnectError()) { // PHP version
-				throw new ConnectionException(sprintf('Searching index "%s" for "%s" failed with error "%s".', $label, $query, $this->sphinx->getLastError()));
-            } elseif($results[$label]['status'] !== SEARCHD_OK) {
-				throw new \RuntimeException(sprintf('Searching index "%s" for "%s" failed with error "%s".', $label, $query, $this->sphinx->getLastError()));
+        foreach ($indexes as $label => $options) {
+         if( !isset($this->indexes[$label]) ) {
+                continue;
             }
-		}
+            $this->sphinx->addQuery($query, $this->indexes[$label]['index_name']);
+        }
+
+        $allResults = $this->sphinx->runQueries();
+
+        if (is_callable(array($this->sphinx, 'IsConnectError')) && $this->sphinx->IsConnectError()) { // PHP version
+            throw new ConnectionException(sprintf('Searching for "%s" failed with error "%s".', $query, $this->sphinx->getLastError()));
+        }
+        else if ($allResults[0]['status'] !== SEARCHD_OK) {
+            throw new \RuntimeException(sprintf('Searching for "%s" failed with error "%s".', $query, $this->sphinx->getLastError()));
+        }
+
+        foreach ($allResults as $resultSet) {
+            if (!isset($resultSet['matches'])) {
+                continue;
+            }
+
+            $label = null;
+
+            foreach ($resultSet['matches'] as $uniqueId => $data) {
+                if ($label === null) {
+                    $label = $data['attrs']['index_name'];
+                    $results[$label] = $resultSet;
+                    break;
+                }
+            }
+        }
 
 		/**
 		 * FIXME: Throw an exception if $results is empty?

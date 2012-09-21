@@ -1,7 +1,6 @@
 <?php
 if (!extension_loaded('sphinx')) { // yes this is ugly
 
-
 //
 // $Id: sphinxapi.php 2758 2011-04-04 11:10:44Z kevg $
 //
