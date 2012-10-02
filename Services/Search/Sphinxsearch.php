@@ -194,12 +194,13 @@ class Sphinxsearch
         }
 
         $allResults = $this->sphinx->runQueries();
+        $lastError = $this->sphinx->getLastError();
 
         if (is_callable(array($this->sphinx, 'IsConnectError')) && $this->sphinx->IsConnectError()) { // PHP version
-            throw new ConnectionException(sprintf('Searching for "%s" failed with error "%s".', $query, $this->sphinx->getLastError()));
+            throw new ConnectionException(sprintf('Searching for "%s" failed with error "%s".', $query, $lastError ? $lastError : ucfirst($allResults[0]['error'])));
         }
         else if ($allResults[0]['status'] !== SEARCHD_OK) {
-            throw new \RuntimeException(sprintf('Searching for "%s" failed with error "%s".', $query, $this->sphinx->getLastError()));
+            throw new \RuntimeException(sprintf('Searching for "%s" failed with error "%s".', $query, $lastError ? $lastError : ucfirst($allResults[0]['error'])));
         }
 
         foreach ($allResults as $resultSet) {
