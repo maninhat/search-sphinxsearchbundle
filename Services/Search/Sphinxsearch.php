@@ -1,25 +1,25 @@
 <?php
-
 namespace Search\SphinxsearchBundle\Services\Search;
 
 use Search\SphinxsearchBundle\Services\Exception\ConnectionException;
 use Doctrine\ORM\EntityManager;
+
 class Sphinxsearch
 {
-	/**
-	 * @var string $host
-	 */
-	private $host;
+    /**
+     * @var string $host
+     */
+    private $host;
 
-	/**
-	 * @var string $port
-	 */
-	private $port;
+    /**
+     * @var string $port
+     */
+    private $port;
 
-	/**
-	 * @var string $socket
-	 */
-	private $socket;
+    /**
+     * @var string $socket
+     */
+    private $socket;
 
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -31,28 +31,28 @@ class Sphinxsearch
      * @var array
      */
     private $mapping;
-	/**
-	 * @var array $indexes
-	 *
-	 * $this->indexes should have the format:
-	 *
-	 *	$this->indexes = array(
-	 *		'IndexLabel' => array(
-	 *			'index_name'	=> 'IndexName',
-	 *			'field_weights'	=> array(
-	 *				'FieldName'	=> (int)'FieldWeight',
-	 *				...,
-	 *			),
-	 *		),
-	 *		...,
-	 *	);
-	 */
-	private $indexes;
+    /**
+     * @var array $indexes
+     *
+     * $this->indexes should have the format:
+     *
+     *    $this->indexes = array(
+     *        'IndexLabel' => array(
+     *            'index_name'    => 'IndexName',
+     *            'field_weights'    => array(
+     *                'FieldName'    => (int)'FieldWeight',
+     *                ...,
+     *            ),
+     *        ),
+     *        ...,
+     *    );
+     */
+    private $indexes;
 
-	/**
-	 * @var SphinxClient $sphinx
-	 */
-	private $sphinx;
+    /**
+     * @var SphinxClient $sphinx
+     */
+    private $sphinx;
 
     /**
      * Constructor.
@@ -65,51 +65,51 @@ class Sphinxsearch
      * @param float $timeout Timeout in seconds.
      * @param \Doctrine\ORM\EntityManager $em  for db query
      */
-	public function __construct($host = 'localhost', $port = '9312', $socket = null, array $indexes = array(),array $mapping = array(), EntityManager $em = null, $timeout = 5)
-	{
-		$this->host = $host;
-		$this->port = $port;
-		$this->socket = $socket;
-		$this->indexes = $indexes;
+    public function __construct($host = 'localhost', $port = '9312', $socket = null, array $indexes = array(),array $mapping = array(), EntityManager $em = null, $timeout = 5)
+    {
+        $this->host = $host;
+        $this->port = $port;
+        $this->socket = $socket;
+        $this->indexes = $indexes;
         $this->em=$em;
         $this->mapping=$mapping;
 
 
-		$this->sphinx = new \SphinxClient();
-		if( $this->socket !== null )
-			$this->sphinx->setServer($this->socket);
-		else
-			$this->sphinx->setServer($this->host, $this->port);
+        $this->sphinx = new \SphinxClient();
+        if( $this->socket !== null )
+            $this->sphinx->setServer($this->socket);
+        else
+            $this->sphinx->setServer($this->host, $this->port);
 
         $this->sphinx->setConnectTimeout((float) $timeout);
-	}
+    }
 
-	/**
+    /**
      * Set the desired match mode.
      *
-	 * @param int $mode The matching mode to be used.
-	 */
-	public function setMatchMode($mode)
-	{
-		$this->sphinx->setMatchMode($mode);
-	}
+     * @param int $mode The matching mode to be used.
+     */
+    public function setMatchMode($mode)
+    {
+        $this->sphinx->setMatchMode($mode);
+    }
 
-	public function setSortMode($mode, $str = '')
-	{
-		$this->sphinx->setSortMode($mode, $str);
-	}
+    public function setSortMode($mode, $str = '')
+    {
+        $this->sphinx->setSortMode($mode, $str);
+    }
 
-	/**
+    /**
      * Set the desired search filter.
      *
-	 * @param string $attribute The attribute to filter.
-	 * @param array $values The values to filter.
-	 * @param bool $exclude Is this an exclusion filter?
-	 */
-	public function setFilter($attribute, $values, $exclude = false)
-	{
-		$this->sphinx->setFilter($attribute, $values, $exclude);
-	}
+     * @param string $attribute The attribute to filter.
+     * @param array $values The values to filter.
+     * @param bool $exclude Is this an exclusion filter?
+     */
+    public function setFilter($attribute, $values, $exclude = false)
+    {
+        $this->sphinx->setFilter($attribute, $values, $exclude);
+    }
 
     /**
      * Set a filter range.
@@ -130,30 +130,30 @@ class Sphinxsearch
         $this->sphinx->setFilterRange($attribute, (int) $min, (int) $max, (bool) $exclude);
     }
 
-	/**
+    /**
      * Search for the specified query string.
      *
-	 * @param string $query The query string that we are searching for.
-	 * @param array $indexes The indexes to perform the search on.
-	 *
-	 * @return ResultCollection The results of the search.
-	 *
-	 * $indexes should have the format:
-	 *
-	 *	$indexes = array(
-	 *		'IndexLabel' => array(
-	 *			'result_offset'	=> (int),
-	 *			'result_limit'	=> (int)
-	 *		),
-	 *		...,
-	 *	);
-	 */
-	public function search($query, array $indexes)
-	{
+     * @param string $query The query string that we are searching for.
+     * @param array $indexes The indexes to perform the search on.
+     *
+     * @return ResultCollection The results of the search.
+     *
+     * $indexes should have the format:
+     *
+     *    $indexes = array(
+     *        'IndexLabel' => array(
+     *            'result_offset'    => (int),
+     *            'result_limit'    => (int)
+     *        ),
+     *        ...,
+     *    );
+     */
+    public function search($query, array $indexes)
+    {
 
-		$results = array();
-		$fieldWeights = array();
-		$options = array(
+        $results = array();
+        $fieldWeights = array();
+        $options = array(
             'result_offset' => 0,
             'result_limit' => 1000,
             'max_matches' => 1000,
@@ -219,7 +219,7 @@ class Sphinxsearch
         }
 
         return new ResultCollection($results,$this->mapping,$this->em);
-	}
+    }
 
     public function escapeString($string)
     {
