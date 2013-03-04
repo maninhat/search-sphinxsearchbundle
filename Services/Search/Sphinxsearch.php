@@ -54,28 +54,6 @@ class Sphinxsearch
 	 */
 	private $sphinx;
 
-    private $escapeReplacements = array(
-        '\\'   => '\\\\',
-        '('    => '\\\(',
-        ')'    => '\\\)',
-        '|'    => '\\\|',
-        '-'    => '\\\-',
-        '!'    => '\\\!',
-        '@'    => '\\\@',
-        '~'    => '\\\~',
-        '"'    => '\\\"',
-        '&'    => '\\\&',
-        '/'    => '\\\/',
-        '^'    => '\\\^',
-        '$'    => '\\\$',
-        '='    => '\\\=',
-        "'"    => "\\'",
-        "\x00" => '\\x00',
-        "\n"   => '\\n',
-        "\r"   => '\\r',
-        "\x1a" => '\\x1a',
-    );
-
     /**
      * Constructor.
      *
@@ -172,8 +150,6 @@ class Sphinxsearch
 	 */
 	public function search($query, array $indexes)
 	{
-		// $query = $this->sphinx->escapeString($query);
-
 		$results = array();
 		$fieldWeights = array();
 		$options = array(
@@ -241,17 +217,11 @@ class Sphinxsearch
             }
         }
 
-		/**
-		 * FIXME: Throw an exception if $results is empty?
-		 */
         return new ResultCollection($results,$this->mapping,$this->em);
 	}
 
     public function escapeString($string)
     {
-        $escaped = $this->sphinx->escapeString($string);
-        $escaped = str_replace(array_keys($this->escapeReplacements), array_values($this->escapeReplacements), $escaped);
-
-        return $escaped;
+        return $this->sphinx->escapeString($string);
     }
 }
