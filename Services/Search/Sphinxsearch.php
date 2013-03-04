@@ -221,8 +221,41 @@ class Sphinxsearch
         return new ResultCollection($results,$this->mapping,$this->em);
     }
 
+    /**
+     * Checks if a string is already escaped.
+     *
+     * @param string $string String to check.
+     *
+     * @return boolean `true` or `false`.
+     */
+    private function isEscaped($string)
+    {
+        $to = array ('\\\\', '\\(','\\)','\\|','\\-','\\!','\\@','\\~','\\"', '\\&', '\\/', '\\^', '\\$', '\\=');
+        $string = preg_replace('/\s+/', '', $string);
+        $parts = explode("\n", chunk_split($string, 2, "\n"));
+
+        foreach ($to as $piece) {
+            if (in_array($piece, $parts)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Escapes a string for a query.
+     *
+     * @param string $string String.
+     *
+     * @return string Escaped version of string.
+     */
     public function escapeString($string)
     {
+        if ($this->isEscaped($string)) {
+            return $string;
+        }
+
         return $this->sphinx->escapeString($string);
     }
 }
