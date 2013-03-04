@@ -150,6 +150,7 @@ class Sphinxsearch
 	 */
 	public function search($query, array $indexes)
 	{
+
 		$results = array();
 		$fieldWeights = array();
 		$options = array(
